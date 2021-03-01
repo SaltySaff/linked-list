@@ -11,7 +11,7 @@ class LinkedList
     if @head
       node = @head
       node = node.next_node while node.next_node
-      node.next_node = value
+      node.next_node = Node.new(value)
       Node.new(value)
     else
       @head = Node.new(value)
@@ -19,39 +19,70 @@ class LinkedList
   end
 
   def prepend(value)
-    # adds a node to the front of the list
-    @head = Node.new(value, @head.value)
+    # adds a new node to the front of the list
+    @head = Node.new(value, @head)
   end
 
   def size
-    count = 0
-    count unless @head
-    node = @head
-    while node.next_node
-      node = node.next_node
-      count += 1
+    # returns the total number of nodes in the list
+    node_count = 0
+    return node_count unless @head
+
+    node_count += 1
+    current_node = @head
+    while current_node.next_node
+      node_count += 1
+      current_node = current_node.next_node
     end
-    count
+    node_count
   end
 
   def head
-    puts "#{@head.value}, #{@head.next_node}"
+    # returns the value of the first node in the list
+    @head.value
   end
 
   def tail
-    a.last
+    # returns the value of the last node in the list
+    node = @head
+    node = node.next_node while node.next_node
+    node.value
   end
 
   def at(index)
-    a[index]
+    # returns the value of the node at a specified index - needs work
+    i = 0
+    node = @head
+    while i != index
+      node = node.next_node
+      i += 1
+    end
+    p node.value
   end
 
   def pop
-    a.pop
+    # removes the last node from the list
+    if @head.next_node
+      last_node = @head
+      second_node = @head
+      last_node = last_node.next_node while last_node.next_node
+      second_node = second_node.next_node while second_node.next_node != last_node
+      second_node.next_node = nil
+      last_node.value = nil
+    else
+      @head = nil
+    end
   end
 
   def contains?(value)
-    a.include?(value)
+    # returns true or false depending on whether an element with that value exists in the list
+    node = @head
+    while node
+      return true if node.value == value
+
+      node = node.next_node
+    end
+    false
   end
 
   def find(value)
@@ -59,7 +90,21 @@ class LinkedList
   end
 
   def to_s
-    puts 'a'
+    # converts the list to a string - needs work
+    node = @head
+    while node
+      print "( #{node.value} ) -> "
+      node = node.next_node
+    end
+    print "nil\n"
+  end
+
+  def insert_at(value, index)
+    p 'hello world'
+  end
+
+  def remove_at(index)
+    p 'hello world'
   end
 end
 
@@ -74,7 +119,8 @@ class Node
 end
 
 list = LinkedList.new
-list.append(249)
-list.append(251)
-list.prepend(526)
-p list.size
+109.times do
+  list.append(rand(300))
+end
+
+list.to_s
