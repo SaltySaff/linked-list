@@ -50,13 +50,9 @@ class LinkedList
   end
 
   def at(index)
-    # returns the value of the node at a specified index - needs work
-    i = 0
+    # returns the value of the node at a specified index
     node = @head
-    while i != index
-      node = node.next_node
-      i += 1
-    end
+    index.times { node = node.next_node }
     p node.value
   end
 
@@ -100,11 +96,19 @@ class LinkedList
   end
 
   def insert_at(value, index)
-    p 'hello world'
+    return @head = Node.new(value, @head) if index.zero?
+
+    node = @head
+    (index - 1).times { node = node.next_node }
+    node.next_node = Node.new(value, node.next_node)
   end
 
   def remove_at(index)
-    p 'hello world'
+    return @head = @head.next_node if index.zero?
+
+    node = @head
+    (index - 1).times { node = node.next_node }
+    node.next_node = node.next_node.next_node
   end
 end
 
@@ -119,8 +123,11 @@ class Node
 end
 
 list = LinkedList.new
-109.times do
-  list.append(rand(300))
-end
-
+# 109.times do
+#   list.append(rand(300))
+# end
+list.append(1)
+list.append(2)
+list.append(3)
+list.remove_at(0)
 list.to_s
